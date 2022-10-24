@@ -1,0 +1,48 @@
+package log
+
+import (
+	"go.uber.org/zap"
+	"go.uber.org/zap/zapcore"
+)
+
+var log *zap.Logger
+
+const LOG_FILE string = `../log/app.log`
+
+func init() {
+	var err error
+
+	config := zap.NewProductionConfig()
+
+	encoderConfig := zap.NewProductionEncoderConfig()
+	encoderConfig.TimeKey = "timestamp"
+	encoderConfig.EncodeTime = zapcore.ISO8601TimeEncoder
+	encoderConfig.StacktraceKey = ""
+	config.EncoderConfig = encoderConfig
+
+	log, err = config.Build(zap.AddCallerSkip(1))
+
+	if err != nil {
+		panic(err)
+	}
+
+	logFile, _ := os.OpenFile(LOG_FILE, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
+	defer logFile.Close()
+	log.SetOutput(logFile)
+}
+
+func Debug(message string, fields ...zap.Field) {
+	log.Debug(message, fields...)
+}
+
+func Info(message string, fields ...zap.Field) {
+	log.Info(message, fields...)
+}
+
+func Fatal(message string, fields ...zap.Field) {
+	log.Fatal(message, fields...)
+}
+
+func Error(message string, fields ...zap.Field) {
+	log.Error(message, fields...)
+}

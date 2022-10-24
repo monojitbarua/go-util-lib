@@ -31,6 +31,7 @@ func init() {
 		os.Exit(1)
 	}
 	info = log.New(logFile, "INFO:\t", log.Ldate|log.Ltime|log.Lshortfile)
+	info.SetFlags(log.LstdFlags | log.Llongfile)
 	warn = log.New(logFile, "WARN:\t", log.Ldate|log.Ltime|log.Lshortfile)
 	error = log.New(logFile, "ERROR:\t", log.Ldate|log.Ltime|log.Lshortfile)
 }
