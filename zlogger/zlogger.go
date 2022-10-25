@@ -15,7 +15,6 @@ func init() {
 	writerSyncer := getLogWriter()
 	encoder := getEncoder()
 	core := zapcore.NewCore(encoder, writerSyncer, zapcore.DebugLevel)
-	//logger := zap.New(core, zap.AddCallerSkip(CALLER_SKIP))
 	logger := zap.New(core, zap.AddCaller(), zap.AddCallerSkip(CALLER_SKIP))
 	sugarLogger = logger.Sugar()
 
@@ -42,17 +41,17 @@ func getLogWriter() zapcore.WriteSyncer {
 }
 
 func Debug(message string) {
-	sugarLogger.Debug(message)
+	sugarLogger.Debugf(message)
 }
 
 func Info(message string) {
-	sugarLogger.Info(message)
+	sugarLogger.Infof(message)
 }
 
-func Fatal(message string) {
-	sugarLogger.Fatal(message)
+func Warn(message string) {
+	sugarLogger.Warnf(message)
 }
 
 func Error(message string) {
-	sugarLogger.Error(message)
+	sugarLogger.Errorf(message)
 }
