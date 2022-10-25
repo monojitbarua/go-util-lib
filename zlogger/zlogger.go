@@ -40,18 +40,18 @@ func getLogWriter() zapcore.WriteSyncer {
 	return zapcore.AddSync(lumberJackLogger)
 }
 
-func Debug(message string) {
-	sugarLogger.Debugf(message)
+func Debug(message string, args ...interface{}) {
+	sugarLogger.Debugf(message, args)
 }
 
-func Info(message string) {
-	sugarLogger.Infof(message)
+func Info(message string, args ...interface{}) {
+	sugarLogger.Infof(message, args)
 }
 
-func Warn(message string) {
-	sugarLogger.Warnf(message)
+func Warn(message string, args ...interface{}) {
+	sugarLogger.Warnf(message, args)
 }
 
-func Error(message string) {
-	sugarLogger.Errorf(message)
+func Error(message string, args ...interface{}) {
+	sugarLogger.Errorf(message, args)
 }
