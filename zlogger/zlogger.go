@@ -15,7 +15,8 @@ func init() {
 	writerSyncer := getLogWriter()
 	encoder := getEncoder()
 	core := zapcore.NewCore(encoder, writerSyncer, zapcore.DebugLevel)
-	logger := zap.New(core, zap.AddCallerSkip(CALLER_SKIP))
+	//logger := zap.New(core, zap.AddCallerSkip(CALLER_SKIP))
+	logger := zap.New(core, zap.AddCaller(), zap.AddCallerSkip(CALLER_SKIP))
 	sugarLogger = logger.Sugar()
 
 	defer sugarLogger.Sync()
@@ -23,6 +24,7 @@ func init() {
 
 func getEncoder() zapcore.Encoder {
 	encoderConfig := zap.NewProductionEncoderConfig()
+	encoderConfig.TimeKey = "timestamp"
 	encoderConfig.EncodeTime = zapcore.ISO8601TimeEncoder
 	encoderConfig.EncodeLevel = zapcore.CapitalLevelEncoder
 	return zapcore.NewConsoleEncoder(encoderConfig)
@@ -31,9 +33,9 @@ func getEncoder() zapcore.Encoder {
 func getLogWriter() zapcore.WriteSyncer {
 	lumberJackLogger := &lumberjack.Logger{
 		Filename:   LOG_FILE,
-		MaxSize:    10,
-		MaxBackups: 5,
-		MaxAge:     30,
+		MaxSize:    5,  // in mb
+		MaxBackups: 3,  // number of files
+		MaxAge:     15, // in days
 		Compress:   false,
 	}
 	return zapcore.AddSync(lumberJackLogger)
